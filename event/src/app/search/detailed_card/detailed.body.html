@@ -1,0 +1,78 @@
+<div class="content">
+    <div class="detailed-card">
+        <div class="event-detail blur-box">
+            <div class="navi">
+               < <a class="back" (click)="goBack()"> back </a>
+            </div>
+            <div class="box-title">
+                <h1>{{detailed_event.name}}</h1>
+            </div>
+            <mat-tab-group>
+                <mat-tab label="Event">
+                    <div class="card-content">
+                        <div class="info">
+                            <label for="date">Date</label>
+                            <div class="value date">
+                                {{detailed_event.Date}}
+                            </div>
+                            <ng-container *ngIf="detailed_event.Artists">
+                                <label> Artists/Team </label>
+                                <div class="value artists">
+                                    <ng-container *ngFor="let ele of detailed_event.Artists; let isLast = last">
+                                        <a href="{{ele.url}}" target="_blank">{{ele.name}}</a>
+                                        <ng-container *ngIf="!isLast"> | </ng-container>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="detailed_event.Venue">
+                                <label> Venue </label>
+                                <div class="value venue">
+                                    <ng-container *ngFor="let ele of detailed_event.Venue; let isLast = last">
+                                        {{ele.name}}
+                                        <ng-container *ngIf="!isLast"> | </ng-container>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="detailed_event.Genre">
+                                <label> Genres </label>
+                                <div class="value genres">
+                                    <ng-container *ngFor="let ele of detailed_event.Genre; let isLast = last">
+                                        {{ele}}
+                                        <ng-container *ngIf="!isLast"> | </ng-container>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="detailed_event.PriceRanges">
+                                <label> Price Ranges </label>
+                                <div class="value price">
+                                    {{detailed_event.PriceRanges}}
+                                </div>
+                            </ng-container>
+                            <label> Ticket Status </label>
+                            <div class="value status">
+                                <button [style]="status_color">
+                                    {{status}}
+                                </button>
+                            </div>
+                            <label> Buy Ticket At: </label>
+                            <div class="value link">
+                                <a [href]="detailed_event.BuyTicketAt">
+                                    Ticketmaster
+                                </a>
+                            </div>
+                        </div>
+                        <div class="pic">
+                            <div>
+                                <img src="" alt="not avaliable">
+                                <!-- ${display_map(json_obj)} -->
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Venue">
+                    Content
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

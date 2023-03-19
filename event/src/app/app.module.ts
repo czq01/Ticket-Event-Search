@@ -1,18 +1,35 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule, Routes } from '@angular/router';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { MainBody } from './event.body';
+import { FormsModule } from '@angular/forms';
+
+const routes: Routes = [
+  {path: 'search', loadChildren: ()=>import('./search/search.module')
+                        .then(m=>m.SearchModule)},
+  {path: 'favorite', loadChildren: ()=>import('./favorite/favorite.module')
+                        .then(m=>m.FavoriteModule)},
+  {path: '', redirectTo: '/search', pathMatch: 'full'},
+];
 
 @NgModule({
   declarations: [
-    AppComponent
+    MainBody,
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
-    AppRoutingModule
+    CommonModule,
+    FormsModule,
+    RouterModule.forRoot(routes),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [MainBody]
 })
-export class AppModule { }
+
+export class AppModule {
+
+}

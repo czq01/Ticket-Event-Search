@@ -1,0 +1,26 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+.switch-page {
+    display: flex;
+    justify-content: right;
+    margin-bottom: 4vh;
+}
+
+button {
+    background: none;
+    cursor: pointer;
+    color: silver;
+    border-radius: 15%;
+    height: 40px;
+    padding: 10px;
+    border-radius: 9px;
+    margin-left: 1vw;
+}
+
+button:hover {
+    background: silver;
+    color: black;
+}
+
+button.active {
+    border: 2.2px solid silver;
+}

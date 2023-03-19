@@ -1,0 +1,83 @@
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
+<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
+<!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * Delete the template below * * * * * * * * * * -->
+<!-- * * * * * * * to get started with your project! * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<div class="content">
+
+    <div class="search-box blur-box">
+        <div class="box-title">
+            <h1>Events Search</h1>
+        </div>
+        <form method="get">
+            <div class="box-content">
+                <div class="Keyword input-field" required>
+                    <div>Keyword</div>
+                    <input class="Keyword tooltip" [(ngModel)]="keyword" name="keyword">
+                    <div class="remainder tip-text" style="display:none">⚠ This field is required. </div>
+                </div>
+                <div class="Distance input-field">
+                    <div>Distance (miles)</div>
+                    <input type="number" [(ngModel)]="distance" name="Distance" class="Distance">
+                </div>
+                <div class="Category input-field">
+                    <div>Category</div>
+                    <div class="select">
+                        <select name="Category" [(ngModel)]="selection">
+                            <option value="Default">Default</option>
+                            <option value="Music">Music</option>
+                            <option value="Sport">Sport</option>
+                            <option value="Arts">Arts</option>
+                            <option value="Theatre">Theatre</option>
+                            <option value="Film">Film</option>
+                            <option value="Misc">Miscellaneous</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="Location input-field">
+                    <div>Location&nbsp;
+                        <input type="checkbox" (change)="onCheckBox($event)" [(ngModel)]="isChecked" name="auto-detect"
+                            class='auto-detect'>
+                        Auto-Detect Location
+                    </div>
+                    <input type="text" [(ngModel)]="location" name="Location" class="Location tooltip">
+                    <div class="remainder tip-text" style="display: none">⚠ This field is required. </div>
+                </div>
+            </div>
+            <div class="submission">
+                <button (click)="onFormSubmission()" type="button" class="submit"> Submit </button>
+                <button (click)="onFormClear()" type="button" class="clear">Clear</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="result-box">
+        <table class="search-result">
+            <tbody *ngIf="table_display && table_json.length">
+                <tr class='title'>
+                    <td (click)="sortTable($event)"> Date </td>
+                    <td> Icon </td>
+                    <td (click)="sortTable($event)"> Event </td>
+                    <td (click)="sortTable($event)"> Genre </td>
+                    <td (click)="sortTable($event)"> Venue </td>
+                </tr>
+                <tr *ngFor="let row of table_json" class='row' attr.eventId={{row.Id}} attr.venueId={{row.VenueId}}>
+                    <td> {{row.Date}} </td>
+                    <td> <img class='icon' src={{row.Icon}}> </td>
+                    <td (click)="getDetail($event)"> {{row.Event}} </td>
+                    <td> {{row.Genre}} </td>
+                    <td> {{row.Venue}} </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="table_display && !table_json.length">
+                <tr>
+                    <td class='empty'>No Records Found</td>
+                <tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
