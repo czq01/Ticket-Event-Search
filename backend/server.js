@@ -7,7 +7,10 @@ app.use(express.static('data'));
 app.use(cors())
 
 const TicketMasterAPI = require("./self_modules/ticket_master.js")
-const api = new TicketMasterAPI();
+const ticket_api = new TicketMasterAPI();
+const SpotifyAPi = require("./self_modules/spotify.js")
+const spotify_api = new SpotifyAPi();
+
 
 app.get('/', (req, res) => {
     res.redirect("http://localhost:4200");
@@ -18,7 +21,7 @@ app.get('/submit_form', (req, res) => {
 
     let query = req.query;
     query.origin = req.headers.origin;
-    api.getEvent(query).then(data => {res.send(data);});
+    ticket_api.getEvent(query).then(data => {res.send(data);});
     data = `{"origin": "${req.headers.origin}",
             "referer": "${req.headers.referer}",
             "host": "${req.headers.host}",
@@ -27,10 +30,32 @@ app.get('/submit_form', (req, res) => {
 })
 
 app.get('/details', (req, res) => {
-    api.getDetail(req.query)
+    ticket_api.getDetail(req.query)
         .then(data => {res.send(data);})
+})
+
+app.get("/suggestion", (req, res) =>{
+    ticket_api.findSuggestions(req.query.keyword)
+        .then(data=>  {res.send(data);});
+})
+
+app.get("/auth", (req, res)=> {
+    console.log(req.query);
+    res.send(req.query);
+})
+
+app.get("/artists_detail", (req, res)=>{
+    spotify_api.getArtist(req.query.artist)
+                .then(data=> {
+                    console.log(data);
+                    res.send(data);
+                });
 })
 
 app.listen(port, () => {
     console.log(`Server running at http://127.0.0.1:${port}`)
 })
+
+// spotify_api.getCode()
+
+

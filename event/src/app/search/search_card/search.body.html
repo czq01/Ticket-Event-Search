@@ -7,7 +7,6 @@
 <!-- * * * * * * * to get started with your project! * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <div class="content">
-
     <div class="search-box blur-box">
         <div class="box-title">
             <h1>Events Search</h1>
@@ -16,7 +15,16 @@
             <div class="box-content">
                 <div class="Keyword input-field" required>
                     <div>Keyword</div>
-                    <input class="Keyword tooltip" [(ngModel)]="keyword" name="keyword">
+                    <input class="Keyword tooltip" #keywordInput matInput [(ngModel)]="keyword" (input)="autoComplete()"
+                        name="keyword" [matAutocomplete]="auto" [formControl]="control">
+                    <mat-autocomplete class="auto-complete" #auto="matAutocomplete">
+                        <div class="autocomplete-options">
+                            <mat-option class="options" *ngFor="let option of keywordOptions" [value]="option">
+                                {{ option }}
+                            </mat-option>
+                        </div>
+                    </mat-autocomplete>
+                    <div class="auto-complete" #myPanel matAutoCompleteOrigin></div>
                     <div class="remainder tip-text" style="display:none">⚠ This field is required. </div>
                 </div>
                 <div class="Distance input-field">

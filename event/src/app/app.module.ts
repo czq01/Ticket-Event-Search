@@ -6,6 +6,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { MainBody } from './event.body';
 import { FormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { Overlay, OverlayModule } from '@angular/cdk/overlay';
 
 const routes: Routes = [
   {path: 'search', loadChildren: ()=>import('./search/search.module')
@@ -23,6 +25,8 @@ const routes: Routes = [
     BrowserAnimationsModule,
     BrowserModule,
     CommonModule,
+    MatAutocompleteModule,
+    OverlayModule,
     FormsModule,
     RouterModule.forRoot(routes),
   ],

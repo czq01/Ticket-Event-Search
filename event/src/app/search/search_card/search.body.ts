@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
+
 
 @Component({
     selector: 'search-page',
@@ -28,20 +30,22 @@ export class SearchPageBody {
     _Node_ResultTable: any;
     _Node_TrTitles: any;
 
+    keywordOptions: any;
+    control = new FormControl();
+
     constructor(
         private http: HttpClient,
         private router: Router,
-        private route: ActivatedRoute,
     ) { }
+
     // Initialize 初始化
     ngOnInit(): void {
         this._Node_Location = document.querySelector('input.Location');
         this._Node_Loc_Tooltip = document.querySelector('.Location>.tip-text');
         this._Node_Keyword = document.querySelector('input.Keyword');
         this._Node_Kwd_tooltip = document.querySelector('.Keyword>.tip-text');
-        this._Node_ResultTable = document.querySelector(".result-box table");
+        this._Node_ResultTable = document.querySelector<Element>(".result-box table");
         // this._Node_TrTitles = document.querySelectorAll('tr.title>td');
-
         this._Node_Location.addEventListener('input', () => {
             this._Node_Loc_Tooltip.style = "display:none;";
             this._Node_Location.style = null;
@@ -50,11 +54,14 @@ export class SearchPageBody {
             this._Node_Kwd_tooltip.style = 'display:none;';
             this._Node_Keyword.style = null;
         })
-        let stateName = this.route.snapshot.paramMap.get("origin");
-        this.restoreState(stateName);
+        let t: any = document.querySelector("div.auto-complete")
+        // let stateName = this.route.snapshot.paramMap.get("origin");
+        this.restoreState("detail");
     }
 
-    restoreState(stateName: string|null) {
+
+
+    restoreState(stateName: string | null) {
         if (!stateName) return;
         let previous_state: any = sessionStorage.getItem(stateName);
         console.log(previous_state);
@@ -62,12 +69,21 @@ export class SearchPageBody {
         let params = JSON.parse(previous_state);
         this.keyword = params['keyword'];
         this.distance = params['distance'];
-        this.selection = params['category'];
+        this.selection = params['selection'];
         this.isChecked = params['isChecked'];
         this.location = params['location'];
         this.table_display = params['table_display'];
         this.table_json = params['table_json'];
         this.sorted = params['sorted'];
+    }
+
+    autoComplete(): void {
+        let url = `${this.backend_domain}/suggestion?keyword=${this.keyword}`;
+        this.http.get(url)
+            .subscribe(data => {
+                console.log(data);
+                this.keywordOptions = data;
+            });
     }
 
     // SubmitForm 提交表单
@@ -86,7 +102,6 @@ export class SearchPageBody {
             this._Node_Loc_Tooltip.removeAttribute('style');
             can_submit = false;
         }
-
         if (!can_submit) return;
 
         let url = this.backend_domain + '/submit_form';
@@ -110,7 +125,6 @@ export class SearchPageBody {
         this.selection = 'Default';
         this.isChecked = false;
         this.location = '';
-        // this.detailed_event = null;
 
         this.table_display = false;
         this.table_json = "";
@@ -119,6 +133,7 @@ export class SearchPageBody {
         this._Node_Loc_Tooltip.style = "display:none;";
         this._Node_Keyword.style = '';
         this._Node_Kwd_tooltip.style = "display:none;";
+        sessionStorage.clear();
         console.log('onClear');
     }
 
@@ -153,18 +168,17 @@ export class SearchPageBody {
     getDetail(event: any) {
         let eid = event.srcElement.parentNode.getAttribute('eventid');
         let vid = event.srcElement.parentNode.getAttribute('venueid');
-        this.router.navigate(['/search/detail', { vid: vid, eid: eid }])
-            .then(() => {
-                sessionStorage.setItem('detail', JSON.stringify({
-                    keyword: this.keyword,
-                    distance: this.distance,
-                    selection: this.selection,
-                    isChecked: this.isChecked,
-                    location: this.location,
-                    table_display: this.table_display,
-                    table_json: this.table_json,
-                    sorted: this.sorted,
-                }));
-            });
+
+        sessionStorage.setItem('detail', JSON.stringify({
+            keyword: this.keyword,
+            distance: this.distance,
+            selection: this.selection,
+            isChecked: this.isChecked,
+            location: this.location,
+            table_display: this.table_display,
+            table_json: this.table_json,
+            sorted: this.sorted,
+        }));
+        this.router.navigate(['/search/detail', { vid: vid, eid: eid }]);
     }
 }

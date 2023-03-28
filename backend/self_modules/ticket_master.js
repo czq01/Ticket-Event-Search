@@ -21,6 +21,20 @@ class TicketMasterAPI {
         //     .then(json =>{this.API_KEY=json.Google_Map;})
     }
 
+    async findSuggestions(keyword) {
+        const res = await fetch(`https://app.ticketmaster.com/discovery/v2/suggest?apikey=${this.API_KEY}&keyword=${keyword}`);
+        let data = await res.json();
+        data = data._embedded;
+        let r = [];
+        if (!data) return r;
+        for (let i = 0; i < data.attractions.length; i++) {
+            r.push(data.attractions[i].name);
+        }
+
+        console.log(r);
+        return r;
+    }
+
     eventConstructor(jsonArr) {
         let eventJson = JSON.parse("[]");
         jsonArr.forEach((ele)=>{
@@ -90,9 +104,10 @@ class TicketMasterAPI {
         record["PriceRanges"] = price? `${price[0].min}-${price[0].max} ${price[0].currency}`: undefined;
         record["TicketStatus"] = json.dates.status.code;
         record["BuyTicketAt"] = json.url;
-        record["SeatMap"] = " ";
+        record["SeatMap"] = json.seatmap?json.seatmap.staticUrl: undefined;
         return record;
     }
+
 
 }
 

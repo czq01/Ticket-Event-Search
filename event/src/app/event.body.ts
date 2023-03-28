@@ -14,4 +14,8 @@ export class MainBody {
     switch_page(page_name: string): void {
         this.page = page_name;
     };
+
+    switch_route(): void {
+        sessionStorage.clear();
+    }
 }
