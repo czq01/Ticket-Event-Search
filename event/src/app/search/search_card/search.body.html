@@ -8,14 +8,14 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <div class="content">
     <div class="search-box blur-box">
-        <div class="box-title">
+        <div class="result-box-title">
             <h1>Events Search</h1>
         </div>
         <form method="get">
-            <div class="box-content">
+            <div class="result-box-content">
                 <div class="Keyword input-field" required>
                     <div>Keyword</div>
-                    <input class="Keyword tooltip" #keywordInput matInput [(ngModel)]="keyword" (input)="autoComplete()"
+                    <input class="Keyword with-tooltip" #keywordInput matInput [(ngModel)]="keyword" (input)="autoComplete()"
                         name="keyword" [matAutocomplete]="auto" [formControl]="control">
                     <mat-autocomplete class="auto-complete" #auto="matAutocomplete">
                         <div class="autocomplete-options">
@@ -51,7 +51,7 @@
                             class='auto-detect'>
                         Auto-Detect Location
                     </div>
-                    <input type="text" [(ngModel)]="location" name="Location" class="Location tooltip">
+                    <input type="text" [(ngModel)]="location" name="Location" class="Location with-tooltip">
                     <div class="remainder tip-text" style="display: none">⚠ This field is required. </div>
                 </div>
             </div>
@@ -63,19 +63,19 @@
     </div>
 
     <div class="result-box">
-        <table class="search-result">
+        <table ngbTable class="search-result">
             <tbody *ngIf="table_display && table_json.length">
-                <tr class='title'>
+                <tr class='result-title'>
                     <td (click)="sortTable($event)"> Date </td>
                     <td> Icon </td>
                     <td (click)="sortTable($event)"> Event </td>
                     <td (click)="sortTable($event)"> Genre </td>
                     <td (click)="sortTable($event)"> Venue </td>
                 </tr>
-                <tr *ngFor="let row of table_json" class='row' attr.eventId={{row.Id}} attr.venueId={{row.VenueId}}>
+                <tr (click)="getDetail($event)" *ngFor="let row of table_json" class='result-row' attr.eventId={{row.Id}} attr.venueId={{row.VenueId}}>
                     <td> {{row.Date}} </td>
                     <td> <img class='icon' src={{row.Icon}}> </td>
-                    <td (click)="getDetail($event)"> {{row.Event}} </td>
+                    <td> {{row.Event}} </td>
                     <td> {{row.Genre}} </td>
                     <td> {{row.Venue}} </td>
                 </tr>

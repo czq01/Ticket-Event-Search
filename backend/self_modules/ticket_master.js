@@ -74,14 +74,18 @@ class TicketMasterAPI {
     }
 
     async getDetail(query) {
-        let result;
+        let result = [];
         await fetch(`https://app.ticketmaster.com/discovery/v2/events/${query.eid}.json?apikey=${this.API_KEY}`)
             .then(res => res.json())
             .then(data => this.formEventJson(data))
-            .then(data => {result = data;})
-        // await fetch(`https://app.ticketmaster.com/discovery/v2/venues/${query.vid}.json?apikey=${this.API_KEY}`)
-        //     .then(res => res.json())
-        //     .then(data)
+            .then(data => {result.push(data);})
+        await fetch(`https://app.ticketmaster.com/discovery/v2/venues/${query.vid}.json?apikey=${this.API_KEY}&`)
+        .then(res => res.json())
+        .then(data => this.formVenueInfo(data))
+        .then(data => {
+            result.push(data);
+            console.log("venue", data);
+        })
         return result;
     }
 
@@ -106,6 +110,22 @@ class TicketMasterAPI {
         record["BuyTicketAt"] = json.url;
         record["SeatMap"] = json.seatmap?json.seatmap.staticUrl: undefined;
         return record;
+    }
+
+    formVenueInfo(json) {
+        let formatted = {};
+        formatted.Name = json.name;
+        formatted.Address = `${json.address.line1}, ${json.city.name}, ${json.state.stateCode}, ${json.country.countryCode}`;
+        formatted.City = json.city.name;
+        formatted.Phone = json.boxOfficeInfo?json.boxOfficeInfo.phoneNumberDetail: undefined;
+        formatted.Phone = formatted.Phone?formatted.Phone: "(No record)"
+        formatted.Hours = json.boxOfficeInfo?json.boxOfficeInfo.openHoursDetail: undefined;
+        formatted.Hours = formatted.Hours?formatted.Hours: "(No record)"
+        formatted.GeneralRule = json.generalInfo? json.generalInfo.generalRule: undefined;
+        formatted.GeneralRule = formatted.GeneralRule?formatted.GeneralRule: "(Unspecified)"
+        formatted.ChildRule = json.generalInfo? json.generalInfo.childRule: undefined;
+        formatted.ChildRule = formatted.ChildRule?formatted.ChildRule: "(Unspecified)"
+        return formatted;
     }
 
 

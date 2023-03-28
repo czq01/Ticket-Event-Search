@@ -14,7 +14,7 @@ class SpotifyAPi {
 
     refresh_token = "AQDRbP37OulrASLJvoFWkN2aGPslEfK10-osyUkf-Md7_bZDJJKTY7r_Z7HxXmbVi1hqyc3Byj8fK9L_XZNoGpmwGPyQD0sGsgljgZMUFIuh1tNHhW9LNK2RFbN6B7IwR6c"
 
-    constructor () {
+    constructor() {
         this.api.setAccessToken(this.access_token);
         this.api.setRefreshToken(this.refresh_token);
     }
@@ -43,13 +43,13 @@ class SpotifyAPi {
         await this.api.refreshAccessToken().then(
             (data) => {
                 this.api.setAccessToken(data.body['access_token']);
-            }, (err) => {console.log('Could not refresh access token', err);}
+            }, (err) => { console.log('Could not refresh access token', err); }
         )
     }
 
     async resetTocken() {
         await this.api.clientCredentialsGrant().then(
-            data => {console.log(data)}
+            data => { console.log(data) }
         )
     }
 
@@ -59,41 +59,56 @@ class SpotifyAPi {
         var authorizeURL = this.api.createAuthorizeURL(scopes, state);
 
         fetch(authorizeURL).then(
-            response=>
-            {console.log(response)}
-            )
+            response => { console.log(response) }
+        )
         console.log(authorizeURL);
     }
 
-    getArtist(name) {
-        console.log("called");
-        return this.api.searchArtists(name)
+    async getArtist(name) {
+        let res = null;
+        await this.api.searchArtists(name)
             .then(data => data.body)
             .then(data => this.filterArtists(data, name))
-            .then(data => {
-                console.log("Get it:", data);
-                return data;
-            }, err => {
-                console.log('Something went wrong!', err.statusCode, err.message);
-                this.refreshTocken().then(
-                    data=>{return this.getArtist(name);}
-                )
+            .then(data => { res = data; }, err => {
+                if (err.statusCode != 401) {
+                    console.log('Something went wrong!', err.statusCode, err.message);
+                } else {
+                    res = 401;
+                }
             });
+        if (res === 401) {
+            await this.refreshTocken();
+            await this.api.searchArtists(name)
+                .then(data => data.body)
+                .then(data => this.filterArtists(data, name))
+                .then(data => { res = data; }, err => {
+                    if (err.statusCode != 401) {
+                        console.log('Something went wrong!', err.statusCode, err.message);
+                        return null;
+                    }
+                    else {
+                        console.log("Error 401");
+                    }
+                });
+        }
+
+        return res;
     }
 
     filterArtists(json, name) {
         let itemsArr = json.artists.items;
         console.log(itemsArr, name)
         let filteredArr = [];
-        itemsArr.forEach((ele)=> {
-            if (ele.name != name) {return;}
-            let item = {};
-            item.Name = ele.name;
-            item.Followers = ele.followers.total;
-            item.Popularity = ele.popularity;
-            item.SpotifyLink = ele.external_urls.spotify;
-            item.Pictures = ele.images
-            filteredArr.push(item);
+        itemsArr.forEach((ele) => {
+            if (ele.name === name) {
+                let item = {};
+                item.Name = ele.name;
+                item.Followers = ele.followers.total;
+                item.Popularity = ele.popularity;
+                item.SpotifyLink = ele.external_urls.spotify;
+                item.Pictures = ele.images;
+                filteredArr.push(item);
+            }
         })
         return filteredArr;
     }

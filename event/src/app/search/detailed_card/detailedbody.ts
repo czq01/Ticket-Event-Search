@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 type Dictionary<T> = {
     [key: string]: T;
 };
@@ -18,7 +19,7 @@ const status_mapping: Dictionary<Array<string>> = {
 @Component({
     selector: 'detailed-page',
     templateUrl: 'detailed.body.html',
-    styleUrls: ['detailed.body.css']
+    styleUrls: ['detailed.body.css', ],
 })
 
 export class DetailedCard {
@@ -34,6 +35,12 @@ export class DetailedCard {
     style: string = "";
     vid: string | null = "";
     eid: string | null = "";
+    arrows: boolean = true;
+    showMore: boolean = false;
+    showGeneralRule: boolean = false;
+    showChildRule: boolean = false;
+    showHours: boolean = false;
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,
@@ -50,6 +57,7 @@ export class DetailedCard {
         this.getDetail();
 
         let favoriate_list: any = localStorage.getItem("favorite");
+        console.log("favorite:", favoriate_list);
         favoriate_list = JSON.parse(favoriate_list ? favoriate_list : "{}")
         this.is_favorite = favoriate_list[this.eid] ? favoriate_list[this.eid] : false;
         this.style = this.favorite_style[Number(this.is_favorite)];
@@ -60,34 +68,21 @@ export class DetailedCard {
         let url = this.backend_domain + '/details?';
         url += `eid=${this.eid}&vid=${this.vid}`;
         await this.http.get(url).toPromise()
-            .then(data => {
-            this.detailed_event = data;
+            .then((data: any) => {
+            console.log(data)
+            this.detailed_event = data[0];
+            this.venue_info = data[1];
+            this.artists_info = data[2];
             this.status = status_mapping[this.detailed_event.TicketStatus][1];
             this.status_color = `background-color: ${status_mapping[this.detailed_event.TicketStatus][0]};`;
             this.basic_decription = this.formJson(this.detailed_event);
         });
-        console.log(this.detailed_event)
-        console.log("genre", this.basic_decription.Genre)
-        if (this.basic_decription.Genre == "Music") {
-            url = this.backend_domain + '/artists_detail?'
-            url += `artist=${this.detailed_event.Artists[0].name}`;
-            this.http.get(url).subscribe(data => {
-                console.log(data)
-                this.artists_info = data;
-            })
-        } else {
-            this.artists_info = null;
-        }
-
     }
 
     formJson(ele: any): any {
         let json = JSON.parse("{}");
         // json.Id = ele.id;
-        // json.VenueId = ele._embedded.Venues[0].id;
         json.Date = ele.Date;
-        // json.Artists =
-        // json.Icon = ele.images[0].url;
         json.Event = ele.name;
         json.Genre = ele.Genre[0];
         json.Venue = ele.Venue[0].name;
@@ -100,12 +95,21 @@ export class DetailedCard {
         let favorite_list: any = localStorage.getItem("favorite");
         favorite_list = JSON.parse(favorite_list ? favorite_list : "{}")
         favorite_list[this.eid] = this.is_favorite;
+        localStorage.setItem("favorite", JSON.stringify(favorite_list));
+
         this.style = this.favorite_style[Number(this.is_favorite)];
         // local storage to store info
         let favorite_info: any = localStorage.getItem("fav_info");
         favorite_info = JSON.parse(favorite_info ? favorite_info : "{}")
-        if (this.is_favorite) favorite_info[this.eid] = this.basic_decription;
-        else delete favorite_info[this.eid];
+        if (this.is_favorite) {
+            alert("Event Added to the favorite!");
+            favorite_info[this.eid] = this.basic_decription;
+        }
+        else {
+            alert("Removed from favorite!");
+            delete favorite_info[this.eid];
+        }
+        localStorage.setItem('fav_info', JSON.stringify(favorite_info));
     }
 
     goBack() {

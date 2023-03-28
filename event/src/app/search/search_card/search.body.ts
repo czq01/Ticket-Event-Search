@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 
-
 @Component({
     selector: 'search-page',
     templateUrl: 'search.body.html',
@@ -112,8 +111,16 @@ export class SearchPageBody {
         console.log(url);
         this.http.get(url)
             .subscribe(data => {
-                this.sorted = false;
                 this.table_json = data;
+                this.table_json.sort((a: any, b: any) => {
+                    let text_a = a.Date;
+                    console.log(a, a.Date);
+                    let text_b = b.Date;
+                    if (text_a < text_b) return -1;
+                    else if (text_a > text_b) return 1;
+                    else return 0;
+                });
+                this.sorted = true;
                 this.table_display = true;
             })
     }
@@ -166,6 +173,7 @@ export class SearchPageBody {
 
     // Get detail Page
     getDetail(event: any) {
+        console.log(event)
         let eid = event.srcElement.parentNode.getAttribute('eventid');
         let vid = event.srcElement.parentNode.getAttribute('venueid');
 

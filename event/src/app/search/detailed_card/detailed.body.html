@@ -11,9 +11,9 @@
                         <span (click)="likeEvent()"><i class="bi bi-heart-fill bi-s" [style]="style"></i></span>
                     </h1>
                 </div>
-                <mat-tab-group>
+                <mat-tab-group class="mat-tab-group">
                     <mat-tab label="Event">
-                        <div class="card-content">
+                        <div class="card-content page">
                             <div class="info">
                                 <label for="date">Date</label>
                                 <div class="value date">
@@ -60,7 +60,7 @@
                                 </div>
                                 <label> Buy Ticket At: </label>
                                 <div class="value link">
-                                    <a [href]="detailed_event.BuyTicketAt">
+                                    <a [href]="detailed_event.BuyTicketAt" target="_blank">
                                         Ticketmaster
                                     </a>
                                 </div>
@@ -70,32 +70,127 @@
                                     <img [src]="detailed_event.SeatMap" alt="not avaliable">
                                 </div>
                             </div>
+
+                        </div>
+                        <div class="shared">
+                            <span>Share on:</span>
+                            <i class="fa-brands fa-twitter"></i>
+                            <i class="fa-brands fa-facebook"></i>
                         </div>
                     </mat-tab>
                     <mat-tab label="Artists">
                         <ng-container *ngIf="artists_info">
-                            <div class="artist-page" *ngFor="let item of artists_info">
+                            <ngb-carousel *ngIf="artists_info.length > 1" [showNavigationArrows]="arrows"
+                                [showNavigationIndicators]="arrows">
+                                <ng-template ngbSlide *ngFor="let item of artists_info">
+                                    <div class="artist-page page">
+                                        <div class="picture">
+                                            <img src="{{item.Pictures[0].url}}" alt="Profile">
+                                            <label>{{item.Name}}</label>
+                                        </div>
+                                        <div class="popularity">
+                                            <label>Popularity</label>
+                                            {{item.Popularity}}
+                                        </div>
+                                        <div class="followers">
+                                            <label>Followers</label>
+                                            {{item.Followers}}
+                                        </div>
+                                        <div class="spotify-link">
+                                            <label>Spotify Link</label>
+                                            <a href="{{item.SpotifyLink}}"><i class="bi bi-spotify fa-2x"></i></a>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngb-carousel>
+                            <div class="artist-page page" *ngIf="artists_info.length === 1">
                                 <div class="picture">
-                                    <img src="{{item.Pictures[0].url}}" alt="Profile">
-                                    {{item.name}}
+                                    <img src="{{artists_info[0].Pictures[0].url}}" alt="Profile">
+                                    <label>{{artists_info[0].Name}}</label>
                                 </div>
                                 <div class="popularity">
                                     <label>Popularity</label>
-                                    {{item.Popularity}}
+                                    {{artists_info[0].Popularity}}
                                 </div>
                                 <div class="followers">
                                     <label>Followers</label>
-                                    {{item.Followers}}
+                                    {{artists_info[0].Followers}}
                                 </div>
                                 <div class="spotify-link">
                                     <label>Spotify Link</label>
-                                    <a href="{{item.SpotifyLink}}"><fa-icon [icon]="faSpotify"></fa-icon></a>
+                                    <a href="{{artists_info[0].SpotifyLink}}"><i class="bi bi-spotify fa-2x"></i></a>
                                 </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="!artists_info">
+                            <div class="page">
+                                <div class="no-record"> No Music related Artist to Show </div>
                             </div>
                         </ng-container>
                     </mat-tab>
                     <mat-tab label="Venue">
-                        Content
+                        <ng-container *ngIf="venue_info">
+                            <div class="venue-info page">
+                                <div class="left">
+                                    <label>Name</label>
+                                    {{venue_info.Name}}
+                                    <label>Address</label>
+                                    {{venue_info.Address}}
+                                    <label>Phone Number</label>
+                                    {{venue_info.Phone}}
+                                </div>
+                                <div class="right">
+
+
+                                    <ng-container *ngIf="venue_info.Hours.length > 100">
+                                        <label>General Rule</label>
+                                        <div [innerHTML]="showHours ? venue_info.Hours : venue_info.Hours.substring(0, 100) + '...'"
+                                            [class.collapsed]="!showGeneralRule">
+                                        </div>
+                                        <a (click)="showHours = !showHours"
+                                            *ngIf="venue_info.Hours.length > 100">
+                                            {{showHours ? '↑ Show Less' : '↓ Show More'}}
+                                        </a>
+                                    </ng-container>
+                                    <ng-container *ngIf="venue_info.Hours.length<=100">
+                                        <label>Open Hours</label>
+                                    {{venue_info.Hours}}
+                                    </ng-container>
+
+
+                                    <ng-container *ngIf="venue_info.GeneralRule.length > 100">
+                                        <label>General Rule</label>
+                                        <div [innerHTML]="showGeneralRule ? venue_info.GeneralRule : venue_info.GeneralRule.substring(0, 100) + '...'"
+                                            [class.collapsed]="!showGeneralRule">
+                                        </div>
+                                        <a (click)="showGeneralRule = !showGeneralRule"
+                                            *ngIf="venue_info.GeneralRule.length > 100">
+                                            {{showGeneralRule ? '↑ Show Less' : '↓ Show More'}}
+                                        </a>
+                                    </ng-container>
+                                    <ng-container *ngIf="venue_info.GeneralRule.length<=100">
+                                        <label>General Rule</label>
+                                        {{venue_info.GeneralRule}}
+                                    </ng-container>
+
+                                    <ng-container *ngIf="venue_info.ChildRule.length > 100">
+                                        <label>Child Rule</label>
+                                        <div [innerHTML]="showChildRule ? venue_info.ChildRule : venue_info.ChildRule.substring(0, 50) + '...'"
+                                            [class.collapsed]="!showChildRule">
+                                        </div>
+                                        <a (click)="showChildRule = !showChildRule"
+                                            *ngIf="venue_info.ChildRule.length > 100">
+                                            {{showChildRule ? '↑ Show Less' : '↓ Show More'}}
+                                        </a>
+                                    </ng-container>
+                                    <ng-container *ngIf="venue_info.ChildRule.length<=100">
+                                        <label>Child Rule</label>
+                                        {{venue_info.ChildRule}}
+
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </ng-container>
                     </mat-tab>
                 </mat-tab-group>
             </ng-container>

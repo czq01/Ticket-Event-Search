@@ -1,0 +1,33 @@
+<div class="favorite-content">
+
+    <table class="search-result">
+        <ng-container *ngIf="favorite_info.length">
+            <thead>
+                <tr class="result-title">
+                    <td>#</td>
+                    <td>Date</td>
+                    <td>Event</td>
+                    <td>Category</td>
+                    <td>Venue</td>
+                    <td>Favorite</td>
+                </tr>
+            </thead>
+            <ng-container *ngFor="let item of favorite_info; index as i">
+                <tr>
+                    <td>{{i+1}}</td>
+                    <td>{{item.Date}}</td>
+                    <td>{{item.Event}}</td>
+                    <td>{{item.Genre}}</td>
+                    <td>{{item.Venue}}</td>
+                    <td attr.eid="{{item.eid}}" class="delete-favorite" >
+                        <i class="fa-regular fa-trash-can trash-bin" (click)="deleteItem($event)"></i>
+                    </td>
+                </tr>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="!favorite_info.length">
+            <div class="no-record">No favorite Event to show.</div>
+        </ng-container>
+    </table>
+
+</div>

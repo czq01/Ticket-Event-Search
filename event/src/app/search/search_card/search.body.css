@@ -24,18 +24,20 @@ div.content {
     );
 }
 
-.box-title>h1 {
+.result-box-title>h1 {
     text-align: center;
     width: 94%;
     position: relative;
     left:2%;
-    padding-bottom: 3%;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
     /* margin-top: 4%; */
-    margin-bottom: 5%;
+    margin-bottom: 1vh;
     border-bottom: #f8faf1 solid 0.5px;
+    color: white;
 }
 
-.box-content {
+.result-box-content {
     position: relative;
     display: grid;
     grid-template-columns: 0.4fr 0.6fr;
@@ -46,7 +48,7 @@ div.content {
     border-radius: 9px;
     margin-top: 2%;
     margin-bottom: 1%;
-    height: 30px;
+    height: 32px;
     background: none;
     border: #d2d2d2 solid 0.2px;
     font-size: 110%;

@@ -13,6 +13,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbModule, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -28,6 +29,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FontAwesomeModule,
     OverlayModule,
     ReactiveFormsModule,
+    NgbModule,
+    NgbCarouselModule,
     RouterModule.forChild([
         {path: '', component: SearchPageBody},
         {path: 'detail', component: DetailedCard}
