@@ -3,9 +3,9 @@ const fs = require("fs");
 
 class SpotifyAPi {
     api = new SpotifyWebApi({
-        clientId: '91375fb0cea34da488f261e774ce08ce',
-        clientSecret: '65779baf14544c5ab16cbe00956b3cbf',
-        redirectUri: "https://example.com/callback",
+        clientId: 'hided',
+        clientSecret: 'hided',
+        redirectUri: "hided",
 
     })
     code = "AQCOSfRMhZno-A4sylJeuJUVvCtK6Dm2Tmrl3q5aYa7rj3pF4kQgIPIaG_gVnr8rSULkAdpqrNd8t7R2SI9Gesvb2dyEMLGsuMx1_Pio5uR48hWZEnO7a3ygNVy2Ye9vO8GiM42igGGZ86U8va-xOSBHGPA7oGYaKFX0W9IDdAFr5mm4vhyka5_UcqIwZ6nV3KOjkbsJQEMiRTcsBBZQSPFB5so"
