@@ -5,13 +5,11 @@ class LocationEncoder {
     Ipinfo_API_KEY
 
     constructor () {
-        this.GOOGLE_MAP_API_KEY = 'AIzaSyD522uFW2ZlH0yFcHCarrEIcy99YhjK2x8';
-        this.Ipinfo_API_KEY = "73275fb2ea245f";
-        // fetch("http://localhost:3000/api.json").then(res => res.json())
-        //     .then(json => {
-        //         this.GOOGLE_MAP_API_KEY=json.Google_Map;
-        //         this.Ipinfo_API_KEY=json.IpInfo;
-        //     })
+         fetch("http://localhost:3000/api.json").then(res => res.json())
+             .then(json => {
+                 this.GOOGLE_MAP_API_KEY=json.Google_Map;
+                 this.Ipinfo_API_KEY=json.IpInfo;
+             })
     }
 
     getCoordinates_Loc(location) {
