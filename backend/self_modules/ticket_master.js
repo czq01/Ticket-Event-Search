@@ -15,10 +15,10 @@ class TicketMasterAPI {
     }
 
     constructor() {
-        this.API_KEY ="AGkwaKcMacktGKNEcBJ0dSp0faHzS7Gv";
-        // fetch("http://localhost:3000/api.json")
-        //     .then(res => res.json())
-        //     .then(json =>{this.API_KEY=json.Google_Map;})
+        this.API_KEY ="...";
+        fetch("http://localhost:3000/api.json")
+             .then(res => res.json())
+             .then(json =>{this.API_KEY=json.Google_Map;})
     }
 
     async findSuggestions(keyword) {
