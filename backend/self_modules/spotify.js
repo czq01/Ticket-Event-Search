@@ -8,11 +8,11 @@ class SpotifyAPi {
         redirectUri: "hided",
 
     })
-    code = "AQCOSfRMhZno-A4sylJeuJUVvCtK6Dm2Tmrl3q5aYa7rj3pF4kQgIPIaG_gVnr8rSULkAdpqrNd8t7R2SI9Gesvb2dyEMLGsuMx1_Pio5uR48hWZEnO7a3ygNVy2Ye9vO8GiM42igGGZ86U8va-xOSBHGPA7oGYaKFX0W9IDdAFr5mm4vhyka5_UcqIwZ6nV3KOjkbsJQEMiRTcsBBZQSPFB5so"
+    code = "..."
 
-    access_token = "BQCVR3VBZqm9wLxB6bwE-hO7ngkVT0sL8sMhPvNvQh6GdizTjQLQseLe1R20yDJ0CN9tIVVIOJaFNCJ5Fpux12ZGDbKgF3Zqinp14hn2FVrKkcBV7B1WbSy7uJyJfYs_lPpeoCGuMfr92P2acColaBArAGi7g7V-OKMv-WO67Tehxk2y2xyfS2zyZY_1I9tCe3zHHyDr6Duv7eECabz2ZK4"
+    access_token = "..."
 
-    refresh_token = "AQDRbP37OulrASLJvoFWkN2aGPslEfK10-osyUkf-Md7_bZDJJKTY7r_Z7HxXmbVi1hqyc3Byj8fK9L_XZNoGpmwGPyQD0sGsgljgZMUFIuh1tNHhW9LNK2RFbN6B7IwR6c"
+    refresh_token = "..."
 
     constructor() {
         this.api.setAccessToken(this.access_token);
