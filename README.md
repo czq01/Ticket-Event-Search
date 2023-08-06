@@ -1,12 +1,13 @@
 # Ticket-Event-Search
 
-This is a Full-stack Project of WebTechnology course (USC CSCI-571).
+This is a Full-stack Project of WebTechnology course (USC CSCI-571). 
+
+The Android Version of this website refers to [czq01/Event-Search-Android](https://github.com/czq01/Event-search-Android)
 
 ## Introduction
 This website is designed to provide users with a platform to search for tickets to various events, such as concerts, sports games, and theater shows. 
 The website allows users to search for tickets based on the event name, location, date, and price range. 
 The results will be displayed in a user-friendly interface, allowing users to easily find the tickets they are looking for.
-
 
 ## Features
 Search Functionality: Users can search for tickets based on event name, location, date, and price range. The results will be displayed in a clear and organized manner, making it easy for users to find the tickets they are looking for.
